@@ -7,11 +7,17 @@
                 </template>
                 <span>首页</span>
             </tabbar-item>
-            <tabbar-item to="/type-list">
+            <tabbar-item to="/help-list">
                 <template #icon="props">
                     <img class="icon-img" :src="props.active ? require('../../assets/icon-home-tab-2-active.png') : require('../../assets/icon-home-tab-2.png')" />
                 </template>
-                <span>订单</span>
+                <span>列表</span>
+            </tabbar-item>
+            <tabbar-item to="/release">
+                <template #icon="props">
+                    <img class="icon-img" :src="props.active ? require('../../assets/icon-home-tab-3-active.png') : require('../../assets/icon-home-tab-3.png')" />
+                </template>
+                <span>发布</span>
             </tabbar-item>
             <tabbar-item to="/my">
                 <template #icon="props">

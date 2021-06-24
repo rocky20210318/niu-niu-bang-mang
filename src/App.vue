@@ -1,6 +1,9 @@
 <template>
     <div id="app-entrance">
-        <router-view/>
+        <keep-alive>
+            <router-view v-if="$route.meta.keepAlive"/>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"/>
         <!-- 底部导航 -->
         <basic-footer v-if="$route.meta.isShowBasicFooter" />
     </div>

@@ -10,7 +10,7 @@
             @edit="onEdit"
             @select="select"
         />
-        <empty v-if="typeof list !== 'object'" description="暂未添加地址" />
+        <Empty v-if="typeof list !== 'object'" description="暂未添加地址" />
     </div>
 </template>
 
@@ -56,9 +56,8 @@ export default {
             this.$router.push('/address?id=' + val.id)
         },
         select (item, index) {
-            // this.$router.replace('/order-detail?index=' + index)
-            this.$router.go(-1)
-            console.log(index)
+            this.$router.replace('/release?index=' + index)
+            // this.$router.go(-1)
         }
     }
 }

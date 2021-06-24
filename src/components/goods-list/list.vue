@@ -11,25 +11,19 @@
             finished-text="没有更多了"
             @load="onLoad"
         >
-            <van-row
-                type="flex"
-                justify="space-between"
-                align="center"
-                class="list"
-            >
-                <item
-                    v-for="item in listData"
-                    :key="item.id"
-                    :details="item"
-                    class="item"
-                />
-            </van-row>
+            <item
+                v-for="item in listData"
+                :key="item.id"
+                :details="item"
+                class="item"
+            />
         </list>
+        <div v-else><Empty description="暂无未发布"/></div>
     </pull-refresh>
 </template>
 
 <script>
-import { List, PullRefresh } from 'vant'
+import { List, PullRefresh, Empty } from 'vant'
 import item from './item-1'
 // import { getGoodsByKeys } from '../../services'
 import AV from 'leancloud-storage'
@@ -38,6 +32,10 @@ export default {
     name: 'product-list',
     props: {
         keys: {
+            type: String,
+            default: ''
+        },
+        tag: {
             type: String,
             default: ''
         },
@@ -66,6 +64,7 @@ export default {
     components: {
         List,
         PullRefresh,
+        Empty,
         item
     },
     data () {
@@ -132,10 +131,12 @@ export default {
             this.isRefreshLoading = false
         },
         async getList (index, size) {
-            const articleList = new AV.Query('ProductList')
+            const articleList = new AV.Query('HelpList')
             articleList.skip((index - 1) * size)
             articleList.limit(size)
             articleList.contains('title', this.keys)
+            // articleList.equalTo('state', 0)
+            if (this.tag) articleList.contains('tag', this.tag)
             this.queryFun(articleList)
             // console.log(this.queryFun)
             const listData = await articleList.find()
@@ -155,8 +156,5 @@ export default {
     // .item:nth-child(2n + 1) {
     //     margin-right: 30px;
     // }
-    .item {
-        margin-bottom: 20px;
-    }
 }
 </style>

@@ -27,70 +27,40 @@
                 <div>
                     <van-row type="flex" align="center" justify="space-between" class="title">
                         <van-icon size="0.5rem" name="refund-o" class="icon" />
-                        <p class="">我的优惠卷</p>
+                        <p class="">我完成的</p>
                     </van-row>
-                    <p class="quantity"><span class="nub">{{ collectionNub }}</span>张</p>
+                    <p class="quantity"><span class="nub">{{ collectionNub }}</span>个</p>
                 </div>
-                <router-link to="/my-receive" class="button">查看</router-link>
+                <router-link to="/order-list-2" class="button">查看</router-link>
             </van-row>
         </div>
         <div class="order">
             <van-row class="top" type="flex" justify="space-between" align="bottom">
-                <p class="title">我的订单</p>
-                <router-link to="/order-list?showType=0" class="all-order">全部订单<van-icon class="icon" name="arrow" /></router-link>
+                <p class="title">我发布的</p>
+                <router-link to="/order-list?showType=0" class="all-order">全部<van-icon class="icon" name="arrow" /></router-link>
             </van-row>
             <van-row type="flex" justify="space-around" align="center">
                 <router-link to="/order-list?showType=1">
                     <div class="img"><img src="../assets/daifukuan.png" alt=""></div>
-                    <p class="text">待付款</p>
+                    <p class="text">待领取</p>
                 </router-link>
                 <router-link to="/order-list?showType=2">
                     <div class="img"><img src="../assets/daifahuo-2.png" alt=""></div>
-                    <p class="text">待发货</p>
+                    <p class="text">未完成</p>
                 </router-link>
                 <router-link to="/order-list?showType=3">
                     <div class="img"><img src="../assets/daifahuo.png" alt=""></div>
-                    <p class="text">待收货</p>
+                    <p class="text">已完成</p>
                 </router-link>
                 <router-link to="/order-list?showType=4">
                     <div class="img"><img src="../assets/daipingjia-2.png" alt=""></div>
-                    <p class="text">待评价</p>
+                    <p class="text">已结束</p>
                 </router-link>
             </van-row>
         </div>
-        <!-- <div class="banner"><router-link to="/search?keys=软壳衣裤"><img src="../assets/my-banner.jpeg" alt=""></router-link></div> -->
-        <!-- <div class="features">
-            <p class="title">其他服务</p>
-            <grid class="grid" :border="false">
-                <grid-item class="item" to="/message-list">
-                    <div><img src="../assets/ic_notification@2x.png" alt=""></div>
-                    <p class="text">通知</p>
-                </grid-item>
-                <grid-item class="item" to="/address-list?switchable=false">
-                    <div><img src="../assets/ic_location.png" alt=""></div>
-                    <p class="text">地址管理</p>
-                </grid-item>
-                <grid-item class="item" to="/pay-list">
-                    <div><img src="../assets/ic_wallet.png" alt=""></div>
-                    <p class="text">支付</p>
-                </grid-item>
-                <grid-item class="item" to="/collect">
-                    <div><img src="../assets/ic_heart@2x.png" alt=""></div>
-                    <p class="text">收藏</p>
-                </grid-item>
-                <grid-item @click="customer" class="item">
-                    <div><img src="../assets/Shape.png" alt=""></div>
-                    <p class="text">联系客服</p>
-                </grid-item>
-                <grid-item class="item" to="/set">
-                    <div><img src="../assets/set.png" alt=""></div>
-                    <p class="text">设置</p>
-                </grid-item>
-            </grid>
-        </div> -->
         <CellGroup class="features">
-            <!-- <Cell title="地址管理" is-link to="/address-list?switchable=false" /> -->
-            <Cell title="收藏" is-link to="/collect" />
+            <Cell title="常用地址管理" is-link to="/address-list?switchable=false" />
+            <!-- <Cell title="收藏" is-link to="/collect" /> -->
             <Cell title="联系客服" is-link @click="customer" />
             <Cell title="设置" is-link to="/set" />
         </CellGroup>
@@ -151,7 +121,7 @@ export default {
             }, 1.5 * 1000)
         },
         customer () {
-            Dialog({ message: '全国热线：02169281133' })
+            Dialog({ message: '客服热线：0216942344' })
         }
     }
 }
@@ -253,7 +223,7 @@ export default {
         }
     }
     .order {
-        margin: 0px 0 20px;
+        margin: 30px 0 20px;
         padding-bottom: 25px;
         box-shadow: 0px 8px 40px 0px rgba(0, 0, 0, 0.1);
         border-radius: 20px;

@@ -1,13 +1,11 @@
 <template>
     <div id="order-list">
-        <van-nav-bar fixed left-arrow @click-left="$router.go(-1)" placeholder title="发布的" />
+        <van-nav-bar fixed left-arrow @click-left="$router.go(-1)" placeholder title="我接取的" />
         <Search v-model="keys" show-action placeholder="请输入商品标题" class="search" @search="search" />
         <tabs v-model="showType" sticky animated swipeable color="#121314" @click="onClickTab">
             <tab title="全部"/>
-            <tab title="待领取"/>
-            <tab title="未完成"/>
+            <tab title="待完成"/>
             <tab title="已完成"/>
-            <tab title="已结束"/>
         </tabs>
         <GoodsList ref="goodsList" :keys="keys" :query-fun="queryFun" class="goods-list"/>
         <!-- <div><Empty description="暂无未发布"/></div> -->
@@ -42,19 +40,13 @@ export default {
         queryFun () {
             const fun = () => {
                 return (Fun) => {
-                    Fun.equalTo('createUser', AV.User.current())
+                    Fun.equalTo('collectUsers', AV.User.current())
                     switch (this.showType) {
                     case 1:
-                        Fun.equalTo('state', 0)
-                        break
-                    case 2:
                         Fun.equalTo('state', 1)
                         break
-                    case 3:
+                    case 2:
                         Fun.equalTo('state', 4)
-                        break
-                    case 4:
-                        Fun.greaterThan('endTime', new Date())
                         break
                     }
                 }

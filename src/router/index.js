@@ -94,6 +94,12 @@ const routes = [
         beforeEnter: authFilter
     },
     {
+        path: '/order-list-2',
+        name: 'OrderList2',
+        component: () => import('../views/OrderList-2.vue'),
+        beforeEnter: authFilter
+    },
+    {
         path: '/collect',
         name: 'Collect',
         component: () => import('../views/Collect.vue'),
@@ -150,6 +156,25 @@ const routes = [
         path: '/password-reset',
         name: 'PasswordReset',
         component: () => import('../views/PasswordReset.vue')
+    },
+    {
+        path: '/help-list',
+        name: 'HelpList',
+        component: () => import('../views/HelpList.vue')
+    },
+    {
+        path: '/details/:id',
+        name: 'Details',
+        component: () => import('../views/Details.vue')
+    },
+    {
+        path: '/release',
+        name: 'Release',
+        component: () => import('../views/Release.vue'),
+        beforeEnter: authFilter,
+        meta: {
+            keepAlive: true
+        }
     },
     {
         path: '/sign-up',

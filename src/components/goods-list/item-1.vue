@@ -1,14 +1,13 @@
 <template>
-    <router-link :to="`/goods-details/${details.id}`" class="product-list-item-1">
-        <div class=""><van-image width="100%" fit="cover" lazy-load :src="details.thumbnail" class="img" /></div>
-        <p class="van-ellipsis title">{{ details.title }}</p>
-        <van-row type="flex" align="center" justify="space-between" class="data">
-            <p class="Price"><span>￥</span>{{ Math.floor(details.price ) }}</p>
-            <p class="original-price">￥{{ Math.floor(details.price / 0.9) }}</p>
-            <router-link :to="`/goods-details/${details.id}?cart=true`">
-                <!-- <tag type="primary" plain>限时包邮</tag> -->
-                <img src="../../assets/cart-icon.png" class="cart-icon" @click.stop="onAddCart(item)">
-            </router-link>
+    <router-link :to="`/details/${details.id}`" class="item">
+        <p class="title van-multi-ellipsis--l2">{{ details.title }}</p>
+        <van-row type="flex" justify="space-between" align="center" class="address-tag">
+            <p class="tag">{{ details.tag }}</p>
+            <p class="endTime">{{ format(details.endTime, 'YYYY-MM-dd HH:mm') }}</p>
+        </van-row>
+        <van-row type="flex" justify="space-between" align="center" class="">
+            <div class="img"><img :src="imgSrc" alt=""></div>
+            <p class="money">¥<span>{{ details.money }}</span></p>
         </van-row>
     </router-link>
 </template>
@@ -16,6 +15,7 @@
 <script>
 // import { Tag } from 'vant'
 import { addCart } from '../../services'
+import { format } from '../../utils/index'
 import AV from 'leancloud-storage'
 
 export default {
@@ -36,6 +36,24 @@ export default {
         }
     },
     computed: {
+        imgSrc () {
+            let url = require('../../assets/waimai.png')
+            switch (this.details.tag) {
+            case '快递':
+                url = require('../../assets/kuaidi.png')
+                break
+            case '外卖':
+                url = require('../../assets/waimai.png')
+                break
+            case '跑腿':
+                url = require('../../assets/paotui.png')
+                break
+            case '带货':
+                url = require('../../assets/daihuo.png')
+                break
+            }
+            return url
+        }
     },
     async created () {
     },
@@ -47,53 +65,50 @@ export default {
                 addCart(item)
                 this.$toast('加入购物车成功')
             } else this.$router.push('/login')
+        },
+        format (date, fm) {
+            return date ? format(date, fm) : '长期有效'
         }
     }
 }
 </script>
 <style lang="scss" scoped>
-.product-list-item-1 {
-    width: 340px;
-    // padding: 20px 20px;
-    padding-bottom: 20px;
-    box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.1);
-    background: #fff;
+.item {
+    display: block;
+    margin: 30px;
+    padding: 30px;
     border-radius: 10px;
-    overflow: hidden;
-    .data {
-        padding: 0 20px;
-    }
-    .img {
-        width: 100%;
-        height: 440px;
-        // border-radius: 10px;
-        overflow: hidden;
-    }
+    box-shadow: 0px 0rem 0.13333rem 1px rgb(0 0 0 / 6%);
+    background: #fff;
+    font-size: 28px;
+    color: #888;
+    line-height: 1;
     .title {
-        padding: 15px 20px;
-        font-size: 32px;
-        color: #121314;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        font-size: 36px;
+        font-weight: 400;
+        color: #333;
     }
-    .Price {
-        font-size: 34px;
-        line-height: 1;
+    .address-tag {
+        margin-bottom: 20px;
+    }
+    .money {
+        font-size: 30px;
         color: #ff202c;
         span {
-            font-size: 24px
+            margin-left: 4px;
+            font-size: 44px;
         }
     }
-    .original-price {
-        position: relative;
-        top: 2px;
-        flex: 1;
-        margin-left: 14px;
-        font-size: 24px;
-        line-height: 1;
-        color: #888;
-        text-decoration: line-through;
-    }
-    .cart-icon {
-        width: 46px;
+    .img {
+        width: 60px;
+        height: 60px;
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            vertical-align: middle;
+        }
     }
 }
 </style>
