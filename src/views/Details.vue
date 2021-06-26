@@ -22,9 +22,12 @@
             <p class="name">收货人：{{ form.name }}</p>
             <p class="phone">联系电话：{{ form.phone }}</p>
         </div>
-        <Button v-if="userData.id !== form.createUserId && form.state === 0" type="block" color="linear-gradient(135deg, #ffb990 0%, #ff3241 100%)" @click="receive" :loading="loading" round class="button">去帮忙</Button>
-        <Button v-if="userData.id === form.createUserId && form.state === 1" type="block" color="linear-gradient(135deg, #ffb990 0%, #ff3241 100%)" @click="complete" :loading="loading" round class="button">任务完成</Button>
-        <Button v-if="userData.id !== form.collectUsersId &&form.state !== 0" type="block" color="linear-gradient(135deg, #ffb990 0%, #ff3241 100%)" disabled round class="button">已被领取</Button>
+        <template v-if="userDataId">
+            <Button v-if="userDataId !== form.createUserId && form.state === 0" type="block" color="linear-gradient(135deg, #ffb990 0%, #ff3241 100%)" @click="receive" :loading="loading" round class="button">去帮忙</Button>
+            <Button v-if="userDataId === form.createUserId && form.state === 1" type="block" color="linear-gradient(135deg, #ffb990 0%, #ff3241 100%)" @click="complete" :loading="loading" round class="button">任务完成</Button>
+            <Button v-if="userDataId !== form.collectUsersId &&form.state !== 0" type="block" color="linear-gradient(135deg, #ffb990 0%, #ff3241 100%)" disabled round class="button">已被领取</Button>
+        </template>
+        <Button v-else type="block" color="linear-gradient(135deg, #ffb990 0%, #ff3241 100%)" to="/login" round class="button">去帮忙</Button>
         <div class="characteristic">
             <!-- <Divider>互帮特色</Divider> -->
             <van-row type="flex" justify="space-between" align="center" class="">
@@ -57,12 +60,13 @@ export default {
         Button
     },
     data () {
+        // console.log(this.$route.params)
         return {
             id: this.$route.params.id,
             loading: false,
             endTime: '',
             createdAt: '',
-            userData: AV.User.current(),
+            userDataId: AV.User.current() ? AV.User.current().id : null,
             form: {}
         }
     },
@@ -81,6 +85,7 @@ export default {
         },
         async getDetails () {
             const Details = new AV.Query('HelpList')
+            console.log(this.id)
             const details = await Details.get(this.id)
             console.log(details)
             this.form = {

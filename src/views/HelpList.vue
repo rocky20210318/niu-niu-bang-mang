@@ -55,7 +55,7 @@ export default {
             const fun = () => {
                 return (Fun) => {
                     Fun.equalTo('state', 0)
-                    Fun.lessThan('endTime', new Date())
+                    Fun.greaterThan('endTime', new Date())
                     switch (this.value2) {
                     case 0:
                         Fun.descending('createdAt')

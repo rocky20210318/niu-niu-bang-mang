@@ -9,19 +9,19 @@
                 <Field v-model="form.address" type="textarea" label="取货地址" placeholder="详细取货地址"  />
             </div>
             <div class="box">
-                <Field v-model="form.receivingAddress" type="textarea" label="收货货地址" placeholder="详细取货地址">
+                <Field v-model="form.receivingAddress" type="textarea" autosize label="收货货地址" placeholder="详细取货地址">
                     <template #button>
-                        <Button size="small" color="#1296db" type="primary" to="/address-list">常用地址</Button>
+                        <Button native-type="button" size="small" color="#1296db" type="primary" to="/address-list">常用地址</Button>
                     </template>
                 </Field>
                 <Field v-model="form.name" label="联系人" placeholder="联系人姓名"  />
                 <Field v-model="form.phone" label="联系电话" placeholder="联系电话" :rules="[{ required: true, message: '请填联系电话' }]"/>
             </div>
             <div class="box">
-                <Field v-model="form.money" label="报酬金额" placeholder="报酬金额" :rules="[{ required: true, message: '请填报酬金额' }]" />
+                <Field v-model="form.money" type="number" label="报酬金额" placeholder="报酬金额" :rules="[{ required: true, message: '请填报酬金额' }]" />
             </div>
             <div class="box">
-                <Field v-model="endTime" label="结束时间" readonly placeholder="未设置结束时间，默认长期有效" @click="isShow = true" />
+                <Field v-model="endTime" label="结束时间" readonly placeholder="未设置结束时间，默认长期7天有效" @click="isShow = true" />
                 <Field name="radio" label="分类">
                     <template #input>
                         <RadioGroup v-model="form.tag" direction="horizontal">
@@ -34,7 +34,7 @@
                     </template>
                 </Field>
             </div>
-            <Button class="button" type="block" color="linear-gradient(135deg, #ffb990 0%, #ff3241 100%)" round native-type="submit">发布</Button>
+            <Button class="button" type="block" color="linear-gradient(135deg, #ffb990 0%, #ff3241 100%)" round :loading="loading" native-type="submit">发布</Button>
         </Form>
         <div class="characteristic">
             <!-- <Divider>互帮特色</Divider> -->
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { Form, Field, Button, RadioGroup, Radio, DatetimePicker, Popup } from 'vant'
+import { Form, Field, Button, RadioGroup, Radio, DatetimePicker, Popup, Dialog } from 'vant'
 import { format } from '../utils/index'
 import { getAddress } from '../services'
 import AV from 'leancloud-storage'
@@ -78,21 +78,25 @@ export default {
         Popup
     },
     data () {
+        let timestamp = new Date().getTime()
+        timestamp = timestamp + 12 * 60 * 60 * 1000
+        const dateAfter = new Date(timestamp)
         return {
             minDate: new Date(),
             maxData: new Date(2021, 11, 31),
             isShow: false,
-            endTime: '',
-            addressIndex: this.$route.query.index,
+            loading: false,
+            endTime: format(dateAfter, 'YYYY-MM-dd HH:mm'),
+            addressIndex: this.$route.query.index || 0,
             form: {
                 title: '',
                 content: '',
                 address: '',
                 phone: AV.User.current().get('mobilePhoneNumber'),
                 name: '',
-                money: '',
-                endTime: '',
-                tag: '',
+                money: 1,
+                endTime: dateAfter,
+                tag: '快递',
                 receivingAddress: '',
                 createUser: AV.User.current()
             }
@@ -101,18 +105,33 @@ export default {
     computed: {
     },
     async created () {
-        if (this.addressIndex) this.getAddress()
+        this.getAddress()
+    },
+    activated () {
+        // console.log(1)
+        this.addressIndex = this.$route.query.index || 0
+        // console.log(this.addressIndex)
+        this.getAddress()
     },
     mounted () {
     },
     methods: {
         async onSubmit () {
+            this.loading = true
             const Add = AV.Object.extend('HelpList')
             const add = new Add()
             for (const key in this.form) {
-                add.set(key, this.form[key])
+                add.set(key, key === 'money' ? Number(this.form[key]) : this.form[key])
+                // console.log(this.form[key])
             }
             await add.save()
+            Dialog({
+                title: '提示',
+                message: '发布成功！'
+            }).then(() => {
+                this.$router.push('/order-list?showType=1')
+            })
+            this.loading = false
         },
         confirm (date) {
             this.form.endTime = date

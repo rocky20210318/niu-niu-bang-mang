@@ -13,12 +13,12 @@
                 <router-link v-if="!userData.username" class="user-name" to="/login">登陆/注册</router-link>
                 <template v-else>
                     <router-link to="/edit-user">
-                        <p class="user-name">{{ userData.username }}<van-icon color="#eee" size="16px" name="edit" class="icon" /></p>
-                        <!-- <div class="vip">
+                        <p class="user-name">{{ userData.username }}</p>
+                        <div class="vip">
                             <span>{{ userData.remarks || '点击编辑' }}</span>
                             <van-icon color="#eee" size="16px" name="edit" class="icon" />
-                            <Button size="mini" color="linear-gradient(180deg,#fcd755 0%,#d81e06 100%)" class="button" to="member">点击编辑</Button>
-                        </div> -->
+                            <!-- <Button size="mini" color="linear-gradient(180deg,#fcd755 0%,#d81e06 100%)" class="button" to="member">点击编辑</Button> -->
+                        </div>
                     </router-link>
                     <!-- <router-link to="/edit-user"><van-icon class="edit" size="24px" name="edit" /></router-link> -->
                 </template>

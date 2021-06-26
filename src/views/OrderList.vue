@@ -54,7 +54,7 @@ export default {
                         Fun.equalTo('state', 4)
                         break
                     case 4:
-                        Fun.greaterThan('endTime', new Date())
+                        Fun.lessThan('endTime', new Date())
                         break
                     }
                 }
