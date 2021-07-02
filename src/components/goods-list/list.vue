@@ -135,6 +135,7 @@ export default {
             articleList.skip((index - 1) * size)
             articleList.limit(size)
             articleList.contains('title', this.keys)
+            articleList.include('createUser')
             // articleList.equalTo('state', 0)
             if (this.tag) articleList.contains('tag', this.tag)
             this.queryFun(articleList)
@@ -142,7 +143,12 @@ export default {
             const listData = await articleList.find()
             // return listData = listData.map(item => ({ ...item.attributes, id: item.id })
             return listData.map(item => {
-                return { ...item.attributes, id: item.id }
+                console.log(item.get('createUser'))
+                return {
+                    ...item.get('createUser').attributes,
+                    ...item.attributes,
+                    id: item.id
+                }
             })
         }
     }

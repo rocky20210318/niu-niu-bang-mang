@@ -8,7 +8,8 @@
             <van-row type="flex" align="center">
                 <div>
                     <img v-if="!userData.userImage" class="user-img" src="../assets/user-category-avatar.png" alt="">
-                    <img v-else class="user-img" :src="userData.userImage" alt="">
+                    <!-- <img  class="user-img" :src="userData.userImage" alt=""> -->
+                    <van-image v-else :src="userData.userImage" round fit="fill" class="user-img" />
                 </div>
                 <router-link v-if="!userData.username" class="user-name" to="/login">登陆/注册</router-link>
                 <template v-else>

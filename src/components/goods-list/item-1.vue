@@ -1,6 +1,11 @@
 <template>
     <router-link :to="`/details/${details.id}`" class="item">
-        <p class="title van-multi-ellipsis--l2">{{ details.title }}</p>
+        <van-row type="flex" justify="space-between" align="center" class="title-name">
+            <p class="title van-ellipsis">{{ details.title }}</p>
+            <!-- <img :src="details.userImage" class="img"> -->
+            <van-image :src="details.userImage" round fit="fill" class="img" />
+            <p class="name van-ellipsis">{{ details.username }}</p>
+        </van-row>
         <van-row type="flex" justify="space-between" align="center" class="address-tag">
             <p class="tag">{{ details.tag }}</p>
             <p class="endTime">{{ format(details.endTime, 'YYYY-MM-dd HH:mm') }}</p>
@@ -37,7 +42,7 @@ export default {
     },
     computed: {
         imgSrc () {
-            let url = require('../../assets/waimai.png')
+            let url = require('../../assets/bangmang.png')
             switch (this.details.tag) {
             case '快递':
                 url = require('../../assets/kuaidi.png')
@@ -83,9 +88,25 @@ export default {
     font-size: 28px;
     color: #888;
     line-height: 1;
-    .title {
-        line-height: 1.2;
+    .title-name {
         margin-bottom: 20px;
+        .img {
+            position: relative;
+            left: 14px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            // margin-right: 10px;
+        }
+        .name {
+            max-width: 130px;
+        }
+    }
+    .title {
+        width: 400px;
+        line-height: 1.2;
+        // margin-bottom: 20px;
         font-size: 36px;
         font-weight: 400;
         color: #333;
@@ -107,7 +128,7 @@ export default {
         img {
             max-width: 100%;
             max-height: 100%;
-            vertical-align: middle;
+            // vertical-align: middle;
         }
     }
 }

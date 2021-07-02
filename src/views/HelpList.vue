@@ -56,9 +56,10 @@ export default {
                 return (Fun) => {
                     Fun.equalTo('state', 0)
                     Fun.greaterThan('endTime', new Date())
+                    // Fun.ascending('updatedAt')
                     switch (this.value2) {
                     case 0:
-                        Fun.descending('createdAt')
+                        Fun.descending('updatedAt')
                         break
                     case 1:
                         Fun.descending('money')
